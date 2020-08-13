@@ -76,8 +76,71 @@ function ProductContextProvider(props) {
          
  
      ])
+
+     const [ cart, setCart ] = useState([]);
+     const [ total, setTotal ] = useState(0);
+
+ 
+   const addCart = (id) => {
+        const check = cart.every(item => {
+           return item.id !== id
+        })
+        if(check) {
+         const data = products.filter(product => {
+            return product.id === id
+         })
+        setCart([ ...cart, ...data ]);  
+      }
+      else {
+         alert('The product has been added to cart')
+      }
+           
+        }
+        
+      const reduction = id => {
+        console.log(cart);
+         cart.forEach(item => {
+            if(item.id === id) {
+              return item.count--
+            }
+         })
+         setCart([...cart])
+
+
+      }
+ 
+      const increase = id => {
+         console.log(cart);
+         cart.forEach(item => {
+            if(item.id === id) {
+              return item.count++
+            }
+         })
+         setCart([...cart])
+     }
+       
+      const remove = id => {
+         if(window.confirm('Do yo want to delete this product?')) {
+            cart.forEach((item, index) => {
+               if(item.id === id) {
+                  cart.splice(index, 1)
+               }
+            })
+            setCart([...cart])
+            getTotal();
+         }
+
+      }
+
+      const getTotal = () => {
+         const res = cart.reduce((prev, item) => {
+            return prev + (item.price * item.count);
+         }, 0)
+         setTotal(res)
+      }
+
     return (
-       <ProductContext.Provider value={{ products}}>
+       <ProductContext.Provider value={{ products, addCart, cart, reduction, increase, remove, total, getTotal }}>
           {props.children}
        </ProductContext.Provider> 
       

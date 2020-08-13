@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import './css/Products.css'
 
 function Products() {
-    const { products } = useContext(ProductContext);
+    const { products, addCart } = useContext(ProductContext);
     console.log(products)
     
     return (
@@ -22,7 +22,7 @@ function Products() {
                        </h3>
                           <span>${product.price}</span>
                           <p>{product.description}</p>
-                          <button>Add to card</button>
+                          <button onClick={() => addCart(product.id)}>Add to card</button>
                 </div>
                 </div>
            ))}
